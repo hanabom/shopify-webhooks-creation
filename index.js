@@ -3,7 +3,9 @@ const { uploadHanabom, putHanabom } = require("./hanabomAPI");
 
 exports.handler = async (event) => {
     const shopifyObj = JSON.parse(event.body);
-
+    const vendor = event.headers.x-shopify-shop-domain;
+    console.log(vendor);
+    
     // Initial product setup
     let product = handlers.basicProperties(shopifyObj);
 
