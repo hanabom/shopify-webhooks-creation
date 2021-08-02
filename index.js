@@ -1,32 +1,33 @@
 const handlers = require("./handlers");
 const { uploadHanabom, putHanabom } = require("./hanabomAPI");
 
-exports.handler = (event) => {
+exports.handler = async (event) => {
     const shopifyObj = JSON.parse(event.body);
 
     // Initial product setup
     let product = handlers.basicProperties(shopifyObj);
 
     // Each Complex Properties setup
-    product.type = handlers.typeProperty(shopifyObj);
-    product.short_description = handlers.shortDescProperty(shopifyObj);
-    product.attributes = handlers.attProperty(shopifyObj);
-    product.categories = handlers.categoryProperty(shopifyObj);
-    product.variations = handlers.variProperty(shopifyObj);
+    product.type = await handlers.typeProperty(shopifyObj);
+    product.short_description = await handlers.shortDescProperty(shopifyObj);
+    product.attributes = await handlers.attProperty(shopifyObj);
+    product.categories = await handlers.categoryProperty(shopifyObj);
+    product.variations = await handlers.variProperty(shopifyObj); 
 
-    product = handlers.stockProperties(product, shopifyObj);
+    product = await handlers.stockProperties(product, shopifyObj);
 
     // Upload product to Hanabom
-    const uploadRes = await uploadHanabom(product, "");
-    console.log(uploadRes)
-    
+    const uploadRes = await uploadHanabom(product);
+
     // Update Image of uploaded product -- it takes long (20 seconds) 
-    // product.images = handlers.imageProperty(product, shopifyObj);
-    // const newProduct = await putHanabom(uploadRes.id, product[1]);
+    const pImages = await handlers.imageProperty(shopifyObj);
+    const newProduct = await putHanabom(uploadRes.id, {images: pImages});
 
-    // product = handlers.descProperty(product, shopifyObj);
+    // Update Description with S3 Image URI
+    const pDesc = await handlers.descProperty(newProduct.images);
+    putHanabom(uploadRes.id, {description: pDesc});
 
-    // TODO implement
+    // Response
     const response = {
         statusCode: 200,
         body: JSON.stringify('Hello from Lambda!'),

@@ -8,8 +8,8 @@ const hanabomObj = {
   description: "",
   short_description: "",
   sku: "sdadw20210711",
-  price: "",
-  regular_price: "",
+  price: "9999",
+  regular_price: "9999",
   sale_price: "",
   date_created: "", //"2021-07-11T23:30:31", //Need
   date_created_gmt: "", // "2021-07-12T06:30:31", //Need
@@ -21,7 +21,7 @@ const hanabomObj = {
   date_on_sale_to_gmt: "", //Need
   on_sale: false,
   purchasable: true,
-  total_sales: "0",
+  total_sales: 0,
   virtual: false,
   downloadable: false,
   download_limit: "-1",
@@ -31,7 +31,7 @@ const hanabomObj = {
   tax_status: "taxable",
   tax_class: "",
   manage_stock: false,
-  stock_quantity: 0, //Need
+  stock_quantity: null, //Need
   in_stock: true,
   backorders: "no",
   backorders_allowed: false,
@@ -50,7 +50,6 @@ const hanabomObj = {
   categories: [], //Need
   images: [],
   attributes: [], 
-  variations: "{}", 
   menu_order: "0",
   stock_status: "",
 };

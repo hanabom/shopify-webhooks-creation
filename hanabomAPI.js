@@ -9,8 +9,8 @@ const WooCommerce = new WooCommerceAPI({
   version: "wc/v2",
 });
 
-const uploadHanabom = (newProduct, param1) => {
-  return WooCommerce.postAsync("products" + param1, newProduct).then((result) =>
+const uploadHanabom = (newProduct) => {
+  return WooCommerce.postAsync("products", newProduct).then((result) =>
     JSON.parse(result.toJSON().body)
   );
 };
