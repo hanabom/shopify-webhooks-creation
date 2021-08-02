@@ -18,7 +18,8 @@ exports.handler = (event) => {
 
     // Upload product to Hanabom
     const uploadRes = await uploadHanabom(product, "");
-
+    console.log(uploadRes)
+    
     // Update Image of uploaded product -- it takes long (20 seconds) 
     // product.images = handlers.imageProperty(product, shopifyObj);
     // const newProduct = await putHanabom(uploadRes.id, product[1]);
