@@ -1,6 +1,7 @@
 //TODO: sale price, unfinished functions, vendors
 
-const { hanabomObj } = require("./hanabomObj");
+const { hanabomObj, attColour, attSize } = require("./hanabomObj");
+const { getHanabom } = require("./hanabomAPI");
 
 const basicProperties = async (shopifyObj) => {
     hanabomObj.name = shopifyObj.title;
@@ -13,22 +14,45 @@ const basicProperties = async (shopifyObj) => {
     return hanabomObj
 }
 
+// If Option.lenght more than one, type is variable
 const typeProperty = (shopifyObj) => {
+    let output = "simple"
     
+    if(shopifyObj.options.length != 0){
+        let totalOptionLength = 0;
+        shopifyObj.options.forEach((element) => {
+            totalOptionLength += element.values.length
+        });
+
+        if(totalOptionLength > 1){
+            output = "variable"
+        }
+    }
     
-    return "simple";
+    return output;
 }
 
-const shortDescProperty = (shopifyObj) => {
-    
-
-    return "";
-} 
+const shortDescProperty = (shopifyObj) => shopifyObj.body_html 
 
 const attProperty = (shopifyObj) => {
-    
+    let output = [];
+    let id = 5;
 
-    return [];
+    shopifyObj.options.forEach((option)=>{
+        if(attColour.includes(option.name)){
+            id = 3
+        }else if(attSize.includes(option.name)){
+            id = 2
+        }
+
+        output.push([{
+            id: id,
+            option:option.values
+        }])
+    });
+
+   
+    return output;
 }
 
 const categoryProperty = (shopifyObj) => {

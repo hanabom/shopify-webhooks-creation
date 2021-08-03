@@ -1,4 +1,7 @@
-const hanabomObj = {
+const attColour = ["color","colour","Color","Colour","COLOR","COLOUR","colors","colours","Colors","Colours","COLORS","COLOURS","Title"];
+const attSize = ["size", "Size", "SIZE"];
+
+let hanabomObj = {
   name: "TestingName",
   slug: "TestingName-20210711",
   type: "simple",
@@ -54,4 +57,4 @@ const hanabomObj = {
   stock_status: "",
 };
 
-module.exports = { hanabomObj };
+module.exports = { hanabomObj, attColour, attSize };

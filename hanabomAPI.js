@@ -15,8 +15,8 @@ const uploadHanabom = (newProduct) => {
   );
 };
 
-const getHanabom = () => {
-  return WooCommerce.getAsync("products/").then((result) =>
+const getHanabom = (param1) => {
+  return WooCommerce.getAsync("products" + param1).then((result) =>
     JSON.parse(result.toJSON().body)
   );
 };
