@@ -3,6 +3,7 @@
 const { hanabomObj, attColour, attSize } = require("./hanabomObj");
 const { getHanabom } = require("./hanabomAPI");
 
+// Every function unneeded properties
 const basicProperties = async (shopifyObj) => {
     hanabomObj.name = shopifyObj.title;
     hanabomObj.slug = shopifyObj.id.toString();
@@ -32,8 +33,10 @@ const typeProperty = (shopifyObj) => {
     return output;
 }
 
+// This may go into basicproperties() after validation
 const shortDescProperty = (shopifyObj) => shopifyObj.body_html 
 
+// Attributes 
 const attProperty = (shopifyObj) => {
     let output = [];
     let id = 5;

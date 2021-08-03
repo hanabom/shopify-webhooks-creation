@@ -1,5 +1,6 @@
 const handlers = require("./handlers");
 const { uploadHanabom, putHanabom } = require("./hanabomAPI");
+const { dbAction, dbEnd } = require("./db");
 
 exports.handler = async (event) => {
     const shopifyObj = JSON.parse(event.body);
@@ -28,6 +29,15 @@ exports.handler = async (event) => {
     // // Update Description with S3 Image URI
     const pDesc = await handlers.descProperty(newProduct.images);
     putHanabom(uploadRes.id, {description: pDesc});
+
+    // Store on db
+    const hanaID = uploadRes.id;
+    const shopifyID = shopifyObj.id;
+    const prodName = product[0].name;
+    const sql = helpers.sql(hanaID, shopifyID, prodName);
+
+    dbAction(sql, (results) => results);
+    dbEnd();
 
     // Response
     const response = {
