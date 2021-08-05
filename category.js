@@ -10,7 +10,7 @@ const hanabomCategory = [
     menu_order: 1,
     count: 108,
     _links: { self: [Array], collection: [Array] },
-    options: ["Acc", "Accessories"],
+    options: ["Acc", "Accessories", "accessories"],
   },
   {
     id: 258,
@@ -62,7 +62,7 @@ const hanabomCategory = [
     menu_order: 0,
     count: 79,
     _links: { self: [Array], collection: [Array], up: [Array] },
-    options: ["BOTTOMS"],
+    options: ["BOTTOMS", "Bottom"],
   },
   {
     id: 270,
