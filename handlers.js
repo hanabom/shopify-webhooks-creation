@@ -6,12 +6,12 @@ const { getHanabom } = require("./hanabomAPI");
 
 // Every function unneeded properties
 const basicProperties = async (shopifyObj) => {
-  hanabomObj.name = shopifyObj.title;
+  hanabomObj.name = shopifyObj.title + "_Chér Cherri";
   hanabomObj.slug = shopifyObj.id.toString();
   hanabomObj.sku =
     shopifyObj.handle + Math.floor(Math.random() * 1000000000).toString();
 
-  // hanabomObj.price = shopifyObj.price;
+  //   hanabomObj.price = shopifyObj.price;
   // hanabomObj.regular_price = shopifyObj.price;
   //hanabomObj.sale_price = "";
 
@@ -86,7 +86,7 @@ const imageProperty = (shopifyObj) => {
 const descProperty = (images) => {
   let output = "";
 
-  images.forEach((element) => {
+  images?.forEach((element) => {
     output += `<img class="size-medium aligncenter" src="${element.src}" alt="" width="300" height="300" /><br />\n`;
   });
 

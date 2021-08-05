@@ -10,6 +10,7 @@ const WooCommerce = new WooCommerceAPI({
 });
 
 const uploadHanabom = (newProduct) => {
+  console.log("newProduct:", newProduct);
   return WooCommerce.postAsync("products", newProduct).then((result) =>
     JSON.parse(result.toJSON().body)
   );
@@ -29,12 +30,12 @@ const putHanabom = (param1, data) => {
 
 const delHanabom = (id) => {
   return WooCommerce.deleteAsync("products/" + id)
-  .then((response) => {
+    .then((response) => {
       console.log(response.data);
-  })
-  .catch((error) => {
+    })
+    .catch((error) => {
       console.log(error.response.data);
-  });
-}
+    });
+};
 
 module.exports = { uploadHanabom, getHanabom, putHanabom, delHanabom };

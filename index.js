@@ -10,7 +10,6 @@ exports.handler = async (event) => {
 
   // Initial product setup
   let product = await handlers.basicProperties(shopifyObj);
-  console.log("product:", product);
 
   // Each Complex Properties setup
   product.type = await handlers.typeProperty(shopifyObj);
@@ -27,6 +26,7 @@ exports.handler = async (event) => {
   // // Update Image of uploaded product -- it takes long (20 seconds)
   const pImages = await handlers.imageProperty(shopifyObj);
   const newProduct = await putHanabom(uploadRes.id, { images: pImages });
+  console.log("image:", newProduct);
 
   // // Update Description with S3 Image URI
   const pDesc = await handlers.descProperty(newProduct.images);
