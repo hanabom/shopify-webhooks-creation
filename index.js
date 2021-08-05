@@ -10,6 +10,7 @@ exports.handler = async (event) => {
 
   // Initial product setup
   let product = await handlers.basicProperties(shopifyObj);
+  console.log("product:", product);
 
   // Each Complex Properties setup
   product.type = await handlers.typeProperty(shopifyObj);
@@ -34,7 +35,7 @@ exports.handler = async (event) => {
   // Store on db
   const hanaID = uploadRes.id;
   const shopifyID = shopifyObj.id;
-  const prodName = product[0].name;
+  const prodName = product.name;
   const sql = helpers.sql(hanaID, shopifyID, prodName);
 
   dbAction(sql, (results) => results);

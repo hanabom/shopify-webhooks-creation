@@ -1,104 +1,113 @@
 //TODO: sale price, unfinished functions, vendors
 
 const { hanabomObj, attColour, attSize } = require("./hanabomObj");
+const { categoryIdFinder } = require("./category");
 const { getHanabom } = require("./hanabomAPI");
 
 // Every function unneeded properties
 const basicProperties = async (shopifyObj) => {
-    hanabomObj.name = shopifyObj.title;
-    hanabomObj.slug = shopifyObj.id.toString();
-    hanabomObj.sku = shopifyObj.handle + Math.floor(Math.random() * 1000000000).toString(); 
-    
-    // hanabomObj.price = shopifyObj.price;
-    // hanabomObj.regular_price = shopifyObj.price;
-    //hanabomObj.sale_price = "";
+  hanabomObj.name = shopifyObj.title;
+  hanabomObj.slug = shopifyObj.id.toString();
+  hanabomObj.sku =
+    shopifyObj.handle + Math.floor(Math.random() * 1000000000).toString();
 
-    return hanabomObj
-}
+  // hanabomObj.price = shopifyObj.price;
+  // hanabomObj.regular_price = shopifyObj.price;
+  //hanabomObj.sale_price = "";
+
+  return hanabomObj;
+};
 
 // If Option.lenght more than one, type is variable
 const typeProperty = (shopifyObj) => {
-    let output = "simple"
-    
-    if(shopifyObj.options.length != 0){
-        let totalOptionLength = 0;
-        shopifyObj.options.forEach((element) => {
-            totalOptionLength += element.values.length
-        });
+  let output = "simple";
 
-        if(totalOptionLength > 1){
-            output = "variable"
-        }
+  if (shopifyObj.options.length != 0) {
+    let totalOptionLength = 0;
+    shopifyObj.options.forEach((element) => {
+      totalOptionLength += element.values.length;
+    });
+
+    if (totalOptionLength > 1) {
+      output = "variable";
     }
-    
-    return output;
-}
+  }
+
+  return output;
+};
 
 // This may go into basicproperties() after validation
-const shortDescProperty = (shopifyObj) => shopifyObj.body_html 
+const shortDescProperty = (shopifyObj) => shopifyObj.body_html;
 
-// Attributes 
+// Attributes
 const attProperty = (shopifyObj) => {
-    let output = [];
-    let id = 5;
+  let output = [];
+  let id = 5;
 
-    shopifyObj.options.forEach((option)=>{
-        if(attColour.includes(option.name)){
-            id = 3
-        }else if(attSize.includes(option.name)){
-            id = 2
-        }
+  shopifyObj.options.forEach((option) => {
+    if (attColour.includes(option.name)) {
+      id = 3;
+    } else if (attSize.includes(option.name)) {
+      id = 2;
+    }
 
-        output.push([{
-            id: id,
-            option:option.values
-        }])
-    });
+    output.push([
+      {
+        id: id,
+        option: option.values,
+      },
+    ]);
+  });
 
-   
-    return output;
-}
+  return output;
+};
 
 const categoryProperty = (shopifyObj) => {
-    
-
-    return [];
-}
+  const collection = shopifyObj.product_type;
+  const categoryData = categoryIdFinder(collection);
+  console.log("categoryData:", categoryData);
+  return [{ id: categoryData.id }];
+};
 
 const variProperty = (shopifyObj) => {
-    
-
-    return {};
-}
+  return {};
+};
 
 const imageProperty = (shopifyObj) => {
-    let output = [];
-    
-    shopifyObj.images.forEach(element => {
-        output.push({src: "https:" + element.src.replace(/\\/g,"")});
-    });
-    
-    return output;
-}
+  let output = [];
+
+  shopifyObj.images.forEach((element) => {
+    output.push({ src: "https:" + element.src.replace(/\\/g, "") });
+  });
+
+  return output;
+};
 
 const descProperty = (images) => {
-    let output = "";
+  let output = "";
 
-    images.forEach((element) => {
-        output += `<img class="size-medium aligncenter" src="${element.src}" alt="" width="300" height="300" /><br />\n`
-    });
+  images.forEach((element) => {
+    output += `<img class="size-medium aligncenter" src="${element.src}" alt="" width="300" height="300" /><br />\n`;
+  });
 
-    return output;
-}
-
+  return output;
+};
 
 const stockProperties = (product, shopifyObj) => {
-    product.manage_stock = false;
-    product.stock_quantity = 0;
+  product.manage_stock = false;
+  product.stock_quantity = 0;
 
-    return product;
-}
+  return product;
+};
 
-module.exports = { basicProperties, typeProperty, descProperty, shortDescProperty, 
-            attProperty, stockProperties, categoryProperty, imageProperty, variProperty };
-  
+module.exports = {
+  basicProperties,
+  typeProperty,
+  descProperty,
+  shortDescProperty,
+  attProperty,
+  stockProperties,
+  categoryProperty,
+  imageProperty,
+  variProperty,
+};
