@@ -63,10 +63,11 @@ const attProperty = (shopifyObj) => {
 };
 
 const categoryProperty = (shopifyObj) => {
+  const result = [];
   const collection = shopifyObj.product_type;
   const categoryData = categoryIdFinder(collection);
-  console.log("categoryData:", categoryData);
-  return [{ id: categoryData.id }];
+  categoryData.forEach((category) => result.push({ id: category.id }));
+  return result;
 };
 
 const variProperty = (shopifyObj) => {
