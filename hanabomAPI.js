@@ -10,7 +10,6 @@ const WooCommerce = new WooCommerceAPI({
 });
 
 const uploadHanabom = (newProduct) => {
-  console.log("newProduct:", newProduct);
   return WooCommerce.postAsync("products", newProduct).then((result) =>
     JSON.parse(result.toJSON().body)
   );
