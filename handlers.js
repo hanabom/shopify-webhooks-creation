@@ -87,9 +87,9 @@ const imageProperty = (shopifyObj) => {
 const descProperty = (images) => {
   let output = "";
 
-  images?.forEach((element) => {
-    output += `<img class="size-medium aligncenter" src="${element.src}" alt="" width="300" height="300" /><br />\n`;
-  });
+  //   images?.forEach((element) => {
+  //     output += `<img class="size-medium aligncenter" src="${element.src}" alt="" width="300" height="300" /><br />\n`;
+  //   });
 
   return output;
 };

@@ -9,19 +9,20 @@ const WooCommerce = new WooCommerceAPI({
   version: "wc/v2",
 });
 
-const uploadHanabom = (newProduct) => {
-  return WooCommerce.postAsync("products", newProduct).then((result) =>
+const uploadHanabom = (newProduct, param = "") => {
+  return WooCommerce.postAsync(`products/${param}`, newProduct).then((result) =>
     JSON.parse(result.toJSON().body)
   );
 };
 
 const getHanabom = (param1) => {
-  return WooCommerce.getAsync("products" + param1).then((result) =>
+  return WooCommerce.getAsync("products/" + param1).then((result) =>
     JSON.parse(result.toJSON().body)
   );
 };
 
 const putHanabom = (param1, data) => {
+  console.log("data:", data);
   return WooCommerce.putAsync("products/" + param1, data).then((result) =>
     JSON.parse(result.toJSON().body)
   );

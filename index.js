@@ -1,11 +1,13 @@
 const handlers = require("./handlers");
-const { uploadHanabom, putHanabom } = require("./hanabomAPI");
+const { uploadHanabom, putHanabom, getHanabom } = require("./hanabomAPI");
 const { dbAction, dbEnd } = require("./db");
+const { variantProperty } = require("./productVariant");
 const helpers = require("./helpers");
 
 exports.handler = async (event) => {
   console.log("event:", event);
-  const shopifyObj = JSON.parse(event.body);
+  const shopifyObj = event.body;
+  //   const shopifyObj = JSON.parse(event.body);
   // const vendor = event.headers.x-shopify-shop-domain;
   // console.log(vendor);
 
@@ -17,7 +19,7 @@ exports.handler = async (event) => {
   product.short_description = await handlers.shortDescProperty(shopifyObj);
   product.attributes = await handlers.attProperty(shopifyObj);
   product.categories = await handlers.categoryProperty(shopifyObj);
-  product.variations = await handlers.variProperty(shopifyObj);
+  //   product.variations = await handlers.variProperty(shopifyObj);
 
   product = await handlers.stockProperties(product, shopifyObj);
 
@@ -25,14 +27,20 @@ exports.handler = async (event) => {
   const uploadRes = await uploadHanabom(product);
   console.log("uploadRes:", uploadRes);
 
-  // // Update Image of uploaded product -- it takes long (20 seconds)
-  const pImages = await handlers.imageProperty(shopifyObj);
-  const newProduct = await putHanabom(uploadRes.id, { images: pImages });
-  console.log("image:", newProduct);
+  variantProperty(shopifyObj, uploadRes.id).then(async (res) => {
+    console.log("res:", res);
+    const putData = await putHanabom(uploadRes.id, { variations: res });
+    console.log("putData:", putData);
+  });
 
-  // // Update Description with S3 Image URI
-  const pDesc = await handlers.descProperty(newProduct.images);
-  putHanabom(uploadRes.id, { description: pDesc });
+  //   // Update Image of uploaded product -- it takes long (20 seconds)
+  //   const pImages = await handlers.imageProperty(shopifyObj);
+  //   const newProduct = await putHanabom(uploadRes.id, { images: pImages });
+  //   console.log("image:", newProduct);
+
+  //   // Update Description with S3 Image URI
+  //   const pDesc = await handlers.descProperty(newProduct.images);
+  //   putHanabom(uploadRes.id, { description: pDesc });
 
   // Store on db
   const hanaID = uploadRes.id;
