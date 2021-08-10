@@ -6,14 +6,10 @@ const { getHanabom } = require("./hanabomAPI");
 
 // Every function unneeded properties
 const basicProperties = async (shopifyObj) => {
-  hanabomObj.name = shopifyObj.title + "_Chér Cherri";
+  hanabomObj.name = shopifyObj.title + "_" + shopifyObj.vendor;
   hanabomObj.slug = shopifyObj.id.toString();
   hanabomObj.sku =
     shopifyObj.handle + Math.floor(Math.random() * 1000000000).toString();
-
-  //   hanabomObj.price = shopifyObj.price;
-  // hanabomObj.regular_price = shopifyObj.price;
-  //hanabomObj.sale_price = "";
 
   return hanabomObj;
 };
@@ -51,12 +47,12 @@ const attProperty = (shopifyObj) => {
       id = 2;
     }
 
-    output.push([
-      {
-        id: id,
-        option: option.values,
-      },
-    ]);
+    output.push({
+      id: id,
+      visible: true,
+      variation: true,
+      options: option.values,
+    });
   });
 
   return output;
@@ -68,10 +64,6 @@ const categoryProperty = (shopifyObj) => {
   const categoryData = categoryIdFinder(collection);
   categoryData.forEach((category) => result.push({ id: category.id }));
   return result;
-};
-
-const variProperty = (shopifyObj) => {
-  return {};
 };
 
 const imageProperty = (shopifyObj) => {
@@ -87,18 +79,11 @@ const imageProperty = (shopifyObj) => {
 const descProperty = (images) => {
   let output = "";
 
-  //   images?.forEach((element) => {
-  //     output += `<img class="size-medium aligncenter" src="${element.src}" alt="" width="300" height="300" /><br />\n`;
-  //   });
+  images?.forEach((element) => {
+    output += `<img class="size-medium aligncenter" src="${element.src}" alt="" width="300" height="300" /><br />\n`;
+  });
 
   return output;
-};
-
-const stockProperties = (product, shopifyObj) => {
-  product.manage_stock = false;
-  product.stock_quantity = 0;
-
-  return product;
 };
 
 module.exports = {
@@ -107,8 +92,6 @@ module.exports = {
   descProperty,
   shortDescProperty,
   attProperty,
-  stockProperties,
   categoryProperty,
   imageProperty,
-  variProperty,
 };

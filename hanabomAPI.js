@@ -22,7 +22,6 @@ const getHanabom = (param1) => {
 };
 
 const putHanabom = (param1, data) => {
-  console.log("data:", data);
   return WooCommerce.putAsync("products/" + param1, data).then((result) =>
     JSON.parse(result.toJSON().body)
   );

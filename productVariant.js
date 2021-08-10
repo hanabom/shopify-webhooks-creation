@@ -1,33 +1,46 @@
 const { hanabomObj, attColour, attSize } = require("./hanabomObj");
-const { uploadHanabom } = require("./hanabomAPI");
+const { uploadHanabom, putHanabom } = require("./hanabomAPI");
 
 const variantProperty = async (shopifyObj, productId) => {
-  const result = [];
-
   const { variants, options } = shopifyObj;
 
-  const varData = Promise.all(
+  if (variants.length <= 1) {
+    // When product has no variant
+
+    const inputObj = {
+      price: variants[0].price,
+      regular_price: variants[0].price,
+      stock_quantity: variants[0].inventory_quantity,
+      manage_stock: variants[0].stock_quantity ? true : false,
+    };
+
+    await putHanabom(productId, inputObj);
+  } else {
+    // When product has variant
+
     variants.map(async (variant) => {
       const variantObj = {
-        sku: "",
         price: "",
         regular_price: "",
         sale_price: "",
         stock_quantity: null,
-        in_stock: false,
+        manage_stock: false,
         attributes: [],
       };
 
       // variantObj.sku = variant.sku;
       variantObj.price = variant.price;
       variantObj.regular_price = variant.price;
+      variantObj.stock_quantity = variant.inventory_quantity;
+
+      // TODO: if vendor didn't put quanity or 0, we will screw
+      variantObj.manage_stock = variant.stock_quantity ? true : false;
 
       options.forEach((option, i) => {
         if (attColour.includes(option.name)) {
           const variantOpt = `option${i + 1}`;
           const obj = {
             id: 3,
-            name: "Colour",
             option: variant[variantOpt],
           };
 
@@ -36,7 +49,6 @@ const variantProperty = async (shopifyObj, productId) => {
           const variantOpt = `option${i + 1}`;
           const obj = {
             id: 2,
-            name: "Size",
             option: variant[variantOpt],
           };
 
@@ -44,22 +56,9 @@ const variantProperty = async (shopifyObj, productId) => {
         }
       });
 
-      const upload = await uploadHanabom(variantObj, `${productId}/variations`);
-      console.log("uploadVar:", upload);
-      result.push(upload.id);
-
-      console.log("in result", result);
-      return upload.id;
-      // return uploadHanabom(variantObj, `${productId}/variations`).then(
-      //   (res) => {
-      //     console.log("uploadVar:", res);
-      //     resultArr.push(res.id);
-      //   }
-      // );
-    })
-  );
-  console.log("out result", varData);
-  return varData;
+      await uploadHanabom(variantObj, `${productId}/variations`);
+    });
+  }
 };
 
 /*
