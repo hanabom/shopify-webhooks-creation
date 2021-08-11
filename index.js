@@ -38,9 +38,12 @@ exports.handler = async (event) => {
   const shopifyID = shopifyObj.id;
   const prodName = product.name;
   const sql = helpers.sql(hanaID, shopifyID, prodName);
+  console.log("sql:", sql);
 
   dbAction(sql, (results) => results);
   dbEnd();
+
+  console.log("after db end");
 
   // Response
   const response = {
