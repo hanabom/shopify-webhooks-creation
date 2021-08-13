@@ -40,7 +40,10 @@ exports.handler = async (event) => {
   const sql = helpers.sql(hanaID, shopifyID, prodName);
   console.log("sql:", sql);
 
-  dbAction(sql, (results) => results);
+  dbAction(sql, (results) => {
+    console.log("inside db action");
+    return results;
+  });
   dbEnd();
 
   console.log("after db end");
