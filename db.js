@@ -9,16 +9,36 @@ const dbConn = mysql.createConnection({
   database: "products",
 });
 
-dbConn.connect((err) => {
-  if (err) throw err;
-  console.log("MySql connected...");
+// dbConn.connect((err) => {
+//   if (err) throw err;
+//   console.log("MySql connected...");
 
-  // return dbConn.query("SELECT * FROM products", function (err, result, fields) {
-  //   if (err) throw err;
-  //   console.log(result);
-  //   return result;
-  // });
-});
+//   return dbConn.query("SELECT * FROM products", function (err, result, fields) {
+//     if (err) throw err;
+//     console.log(result);
+//     return result;
+//   });
+// });
+
+function handleDisconnect() {
+  dbConn.connect(function (err) {
+    if (err) {
+      console.log("error when connecting to db:", err);
+      setTimeout(handleDisconnect, 2000);
+    }
+  });
+
+  dbConn.on("error", function (err) {
+    console.log("db error", err);
+    if (err.code === "PROTOCOL_CONNECTION_LOST") {
+      return handleDisconnect();
+    } else {
+      throw err;
+    }
+  });
+}
+
+handleDisconnect();
 
 const dbAction = (sql, callback) => {
   dbConn.query(sql, function (err, results) {
