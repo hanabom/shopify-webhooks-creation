@@ -25,13 +25,13 @@ exports.handler = async (event) => {
 
   variantProperty(shopifyObj, uploadRes.id);
 
-  //   // Update Image of uploaded product -- it takes long (20 seconds)
-  // const pImages = await handlers.imageProperty(shopifyObj);
-  // const newProduct = await putHanabom(uploadRes.id, { images: pImages });
+  // Update Image of uploaded product -- it takes long (20 seconds)
+  const pImages = await handlers.imageProperty(shopifyObj);
+  const newProduct = await putHanabom(uploadRes.id, { images: pImages });
 
-  //   // Update Description with S3 Image URI
-  // const pDesc = await handlers.descProperty(newProduct.images);
-  // putHanabom(uploadRes.id, { description: pDesc });
+  // Update Description with S3 Image URI
+  const pDesc = await handlers.descProperty(newProduct.images);
+  putHanabom(uploadRes.id, { description: pDesc });
 
   // Store on db
   const hanaID = uploadRes.id;
