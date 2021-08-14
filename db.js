@@ -9,23 +9,13 @@ const dbConn = mysql.createConnection({
   database: "products",
 });
 
-// dbConn.connect((err) => {
-//   if (err) throw err;
-//   console.log("MySql connected...");
-
-//   return dbConn.query("SELECT * FROM products", function (err, result, fields) {
-//     if (err) throw err;
-//     console.log(result);
-//     return result;
-//   });
-// });
-
 function handleDisconnect() {
   dbConn.connect(function (err) {
     if (err) {
       console.log("error when connecting to db:", err);
       setTimeout(handleDisconnect, 2000);
     }
+    console.log("MySql connected...");
   });
 
   dbConn.on("error", function (err) {
