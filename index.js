@@ -12,6 +12,7 @@ exports.handler = async (event) => {
 
   // Initial product setup
   let product = await handlers.basicProperties(shopifyObj);
+  console.log("product:", product);
 
   // Each Complex Properties setup
   product.type = await handlers.typeProperty(shopifyObj);
