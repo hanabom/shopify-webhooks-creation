@@ -10,6 +10,7 @@ const basicProperties = async (shopifyObj) => {
   hanabomObj.slug = shopifyObj.id.toString();
   hanabomObj.sku =
     shopifyObj.handle + Math.floor(Math.random() * 1000000000).toString();
+  hanabomObj.tags = shopifyObj.tags.split(",");
 
   return hanabomObj;
 };

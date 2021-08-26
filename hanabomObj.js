@@ -1,4 +1,18 @@
-const attColour = ["color","colour","Color","Colour","COLOR","COLOUR","colors","colours","Colors","Colours","COLORS","COLOURS","Title"];
+const attColour = [
+  "color",
+  "colour",
+  "Color",
+  "Colour",
+  "COLOR",
+  "COLOUR",
+  "colors",
+  "colours",
+  "Colors",
+  "Colours",
+  "COLORS",
+  "COLOURS",
+  "Title",
+];
 const attSize = ["size", "Size", "SIZE"];
 
 let hanabomObj = {
@@ -52,9 +66,10 @@ let hanabomObj = {
   purchase_note: "",
   categories: [], //Need
   images: [],
-  attributes: [], 
+  attributes: [],
   menu_order: "0",
   stock_status: "",
+  tags: [],
 };
 
 module.exports = { hanabomObj, attColour, attSize };
