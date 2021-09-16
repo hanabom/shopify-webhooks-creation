@@ -2,7 +2,7 @@
 
 const { hanabomObj, attColour, attSize } = require("./hanabomObj");
 const { categoryIdFinder } = require("./category");
-const { getHanabom, uploadTag } = require("./hanabomAPI");
+// const { getHanabom, uploadTag } = require("./hanabomAPI");
 
 // Every function unneeded properties
 const basicProperties = async (shopifyObj) => {
@@ -100,33 +100,34 @@ module.exports = {
   imageProperty,
 };
 
-export const loadTable = (tableType, tableName) => (dispatch, getState) => {
-  const tables = getState().tables;
-  const table = _.get(tables, [tableType, tableName]);
-  if (table) {
-    return Promise.resolve(table);
-  }
-  return fetchTable(tableType, tableName)
-    .then((data) =>
-      dispatch({
-        type: "SET_TABLE",
-        payload: { tableType, tableName, data },
-      })
-    )
-    .catch((e) => message.error(e.message));
-};
+// 회사 코드
+// export const loadTable = (tableType, tableName) => (dispatch, getState) => {
+//   const tables = getState().tables;
+//   const table = _.get(tables, [tableType, tableName]);
+//   if (table) {
+//     return Promise.resolve(table);
+//   }
+//   return fetchTable(tableType, tableName)
+//     .then((data) =>
+//       dispatch({
+//         type: "SET_TABLE",
+//         payload: { tableType, tableName, data },
+//       })
+//     )
+//     .catch((e) => message.error(e.message));
+// };
 
-export const loadTables = (layers) => (dispatch) => {
-  const filtered = _.uniqBy(
-    _.filter(layers, (l) => l.tableType !== "db").map((l) =>
-      _.pick(l, ["tableType", "tableName"])
-    ),
-    (l) => l.tableName
-  );
-  return Promise.all(
-    filtered.map((layer) => {
-      const { tableType, tableName } = layer;
-      return dispatch(loadTable(tableType, tableName));
-    })
-  );
-};
+// export const loadTables = (layers) => (dispatch) => {
+//   const filtered = _.uniqBy(
+//     _.filter(layers, (l) => l.tableType !== "db").map((l) =>
+//       _.pick(l, ["tableType", "tableName"])
+//     ),
+//     (l) => l.tableName
+//   );
+//   return Promise.all(
+//     filtered.map((layer) => {
+//       const { tableType, tableName } = layer;
+//       return dispatch(loadTable(tableType, tableName));
+//     })
+//   );
+// };

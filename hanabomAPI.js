@@ -37,23 +37,22 @@ const delHanabom = (id) => {
     });
 };
 
-const uploadTag = (newTag) => {
-  return WooCommerce.postAsync(`products/tags`, newTag).then((result) =>
-    JSON.parse(result.toJSON().body)
-  );
-};
+// Tag apis
+// const uploadTag = (newTag) => {
+//   return WooCommerce.postAsync(`products/tags`, newTag).then((result) =>
+//     JSON.parse(result.toJSON().body)
+//   );
+// };
 
-const getAllTags = () => {
-  return WooCommerce.getAsync("products/tags").then((result) =>
-    JSON.parse(result.toJSON().body)
-  );
-};
+// const getAllTags = () => {
+//   return WooCommerce.getAsync("products/tags").then((result) =>
+//     JSON.parse(result.toJSON().body)
+//   );
+// };
 
 module.exports = {
   uploadHanabom,
   getHanabom,
   putHanabom,
   delHanabom,
-  uploadTag,
-  getAllTags,
 };
