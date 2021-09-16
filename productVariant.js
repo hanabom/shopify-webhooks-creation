@@ -11,7 +11,7 @@ const variantProperty = async (shopifyObj, productId) => {
       price: variants[0].price,
       regular_price: variants[0].price,
       stock_quantity: variants[0].inventory_quantity,
-      manage_stock: variants[0].stock_quantity ? true : false,
+      manage_stock: variants[0].inventory_quantity ? true : false,
     };
 
     await putHanabom(productId, inputObj);
@@ -34,7 +34,7 @@ const variantProperty = async (shopifyObj, productId) => {
       variantObj.stock_quantity = variant.inventory_quantity;
 
       // TODO: if vendor didn't put quanity or 0, we will screw
-      variantObj.manage_stock = variant.stock_quantity ? true : false;
+      variantObj.manage_stock = variant.inventory_quantity ? true : false;
 
       options.forEach((option, i) => {
         if (attColour.includes(option.name)) {

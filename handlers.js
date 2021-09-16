@@ -2,7 +2,7 @@
 
 const { hanabomObj, attColour, attSize } = require("./hanabomObj");
 const { categoryIdFinder } = require("./category");
-const { getHanabom } = require("./hanabomAPI");
+const { getHanabom, uploadTag } = require("./hanabomAPI");
 
 // Every function unneeded properties
 const basicProperties = async (shopifyObj) => {
@@ -10,7 +10,10 @@ const basicProperties = async (shopifyObj) => {
   hanabomObj.slug = shopifyObj.id.toString();
   hanabomObj.sku =
     shopifyObj.handle + Math.floor(Math.random() * 1000000000).toString();
-  hanabomObj.tags = shopifyObj.tags.split(",");
+
+  // const tagArray = shopifyObj.tags.split(",");
+  // const tagsObjArray = tagArray.map((tag) => await uploadTag(tag));
+  // console.log("tagsObjArray:", tagsObjArray);
 
   return hanabomObj;
 };
@@ -80,9 +83,9 @@ const imageProperty = (shopifyObj) => {
 const descProperty = (images) => {
   let output = "";
 
-  images?.forEach((element) => {
-    output += `<img class="size-medium aligncenter" src="${element.src}" alt="" width="300" height="300" /><br />\n`;
-  });
+  // images?.forEach((element) => {
+  //   output += `<img class="size-medium aligncenter" src="${element.src}" alt="" width="300" height="300" /><br />\n`;
+  // });
 
   return output;
 };
@@ -95,4 +98,35 @@ module.exports = {
   attProperty,
   categoryProperty,
   imageProperty,
+};
+
+export const loadTable = (tableType, tableName) => (dispatch, getState) => {
+  const tables = getState().tables;
+  const table = _.get(tables, [tableType, tableName]);
+  if (table) {
+    return Promise.resolve(table);
+  }
+  return fetchTable(tableType, tableName)
+    .then((data) =>
+      dispatch({
+        type: "SET_TABLE",
+        payload: { tableType, tableName, data },
+      })
+    )
+    .catch((e) => message.error(e.message));
+};
+
+export const loadTables = (layers) => (dispatch) => {
+  const filtered = _.uniqBy(
+    _.filter(layers, (l) => l.tableType !== "db").map((l) =>
+      _.pick(l, ["tableType", "tableName"])
+    ),
+    (l) => l.tableName
+  );
+  return Promise.all(
+    filtered.map((layer) => {
+      const { tableType, tableName } = layer;
+      return dispatch(loadTable(tableType, tableName));
+    })
+  );
 };
